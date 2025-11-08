@@ -1,0 +1,71 @@
+name: Good-task CI
+
+on:
+  push:
+    branches: [ main, live ]
+    paths: [ 'Good-task/**' ]
+    tags: ['v*']
+  pull_request:
+    paths: [ 'Good-task/**' ]
+
+jobs:
+  build:
+    name: Install & Build Good-task
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Cache Good-task node_modules
+        uses: actions/cache@v4
+        with:
+          path: Good-task/node_modules
+          key: ${{ runner.os }}-good-task-node-${{ hashFiles('Good-task/package.json') }}
+
+      - name: Install Good-task dependencies
+        run: |
+          npm --prefix ./Good-task ci
+
+      - name: Run Good-task lint (if present)
+        run: |
+          npm --prefix ./Good-task run lint --if-present
+
+      - name: Build Good-task (if present)
+        run: |
+          npm --prefix ./Good-task run build --if-present
+
+      - name: Upload build artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: good-task-dist
+          path: Good-task/dist
+
+  publish:
+    name: Publish Good-task (tag)
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Good-task dependencies
+        run: |
+          npm --prefix ./Good-task ci
+
+      - name: Publish placeholder
+        run: |
+          echo "Tag push detected for Good-task: ${GITHUB_REF}"
+          echo "Add publish/deploy steps here (e.g., upload to S3, deploy to Netlify/Vercel). Use GitHub Secrets for credentials."
