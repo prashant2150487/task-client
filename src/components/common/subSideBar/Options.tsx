@@ -1,0 +1,39 @@
+import { Item, ItemContent, ItemTitle } from "@/components/ui/item";
+
+const Options = ({
+  setEditMode,
+  setShowOptions,
+}: {
+  setEditMode: (value: boolean) => void
+  setShowOptions: (value: boolean) => void;
+}) => {
+
+  const handleClick=()=>{
+    setEditMode(true)
+    setShowOptions(false)
+  }
+  
+  return (
+    <div className="bg-gray-700 absolute w-sm left-96 top-50">
+      <Item>
+        <ItemContent>
+          <ItemTitle
+            className="cursor-pointer w-full hover:bg-gray-600"
+            
+            onClick={() => handleClick()}
+          >
+            Create Folder
+          </ItemTitle>
+          <ItemTitle
+            className="cursor-pointer w-full"
+            onClick={() => setEditMode(false)}
+          >
+            Create{" "}
+          </ItemTitle>
+        </ItemContent>
+      </Item>
+    </div>
+  );
+};
+
+export default Options;
