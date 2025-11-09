@@ -4,7 +4,7 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Define your base API configuration
 const axiosConfig: AxiosRequestConfig = {
-  baseURL: import.meta.env.VITE_API_BASE_URL || "https://api.example.com",
+  baseURL: import.meta.env.VITE_API_BASE_URL + "/api/v1",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -17,7 +17,7 @@ const axiosInstance: AxiosInstance = axios.create(axiosConfig);
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // You can add auth tokens here 
+    // You can add auth tokens here
     const token = localStorage.getItem("authToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       // Handle unauthorized access
       localStorage.removeItem("authToken");
-      if(window.location.pathname !== "/login"){
+      if (window.location.pathname !== "/login") {
         window.location.href = "/login";
       }
     }

@@ -1,15 +1,13 @@
 import type { ReactNode } from "react";
-import { AppSidebar } from "../common/appSideBar";
 import NavigationSideBar from "../common/navigationSideBar/inde";
 import SubSidebar from "../common/subSideBar";
 
 export const BaseLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <NavigationSideBar />
-      <SubSidebar/>
-      <AppSidebar />
-      <main>{children}</main>
+      <SubSidebar />
+      <main className="flex-1">{children}</main>
     </div>
   );
 };
