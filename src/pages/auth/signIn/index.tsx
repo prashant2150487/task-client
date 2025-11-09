@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import axios from "axios";
 import axiosInstance from "@/services/axiosInstance";
 import { useNavigate } from "react-router";
 
