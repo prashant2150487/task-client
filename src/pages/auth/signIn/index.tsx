@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,6 +13,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import axiosInstance from "@/services/axiosInstance";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/services/slices/authSlice";
 import { useNavigate } from "react-router";
 
 const Signin = () => {
@@ -21,10 +23,9 @@ const Signin = () => {
     password: "",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
   const navigate=useNavigate()
-  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,35 +37,28 @@ const Signin = () => {
     try {
       setIsLoading(true);
 
-      const response = await axiosInstance.post(
-        "/auth/signin",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-      if(response.data.success){
-        navigate('/')
+      const response = await axiosInstance.post("/auth/signin", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (response.data.success) {
+        dispatch(
+          setCredentials({
+            user: response.data.data.user,
+            token: response.data.data.token,
+          })
+        );
+
+        navigate("/");
       }
-      console.log(response.data.success)
-
-
-      // Store token if provided
-      // if (data.token) {
-      //   localStorage.setItem("authToken", data.token);
-      // }
-
-      // Redirect or update UI as needed
-      // window.location.href = '/dashboard'
+     
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An error occurred during sign in"
-      );
+      
       console.error("Sign in error:", err);
     } finally {
       setIsLoading(false);
     }
-    // TODO: integrate login API here
   };
 
   return (
@@ -113,7 +107,6 @@ const Signin = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-
                   className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                 >
                   {showPassword ? (

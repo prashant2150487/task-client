@@ -1,11 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axiosInstance from "@/services/axiosInstance";
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface User {
-  id?: number;
-  email?: string;
-  name?: string;
-  [key: string]: any;
+  id: number;
+  email: string;
+  name: string;
 }
 
 interface AuthState {
@@ -16,17 +14,21 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  token:
-    typeof window !== "undefined" ? localStorage.getItem("authToken") : null,
-  isAuthenticated: !!(
-    typeof window !== "undefined" && localStorage.getItem("authToken")
-  ),
+  token: localStorage.getItem("authToken") || null,
+  isAuthenticated: !!localStorage.getItem("authToken")
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setCredentials(state, action) {
+      const { user, token } = action.payload;
+      state.user = user;
+      state.token = token;
+      state.isAuthenticated = true;
+      localStorage.setItem("authToken", token);
+    },
     logout(state) {
       state.user = null;
       state.token = null;
@@ -36,5 +38,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setCredentials } = authSlice.actions;
 export default authSlice.reducer;
