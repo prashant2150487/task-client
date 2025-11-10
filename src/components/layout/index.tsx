@@ -7,7 +7,7 @@ export const BaseLayout = ({ children }: { children: ReactNode }) => {
     <div className="flex w-full">
       <NavigationSideBar />
       <SubSidebar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 bg-white">{children}</main>
     </div>
   );
 };

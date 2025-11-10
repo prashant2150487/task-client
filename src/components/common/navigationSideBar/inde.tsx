@@ -6,14 +6,16 @@ import {
   HomeIcon,
   SearchIcon,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import NavUser from "./navUser";
+import { Link } from "react-router";
 const NavigationSideBar = () => {
   return (
     <div className="text-black bg-[#274182] min-h-screen w-18 border-0 flex flex-col items-center justify-between p-2.5 pt-4">
       <div className="flex items-center flex-col gap-3">
-        <div>
+        <Link to="/">
           <img src={logo} alt="logo" className="size-7 mx-auto" />
-        </div>
+        </Link>
         <Button size="icon" className="bg-transparent bg-none">
           <HomeIcon className="size-sm" />
         </Button>
@@ -37,13 +39,7 @@ const NavigationSideBar = () => {
         <Button size="icon" className="bg-transparent bg-none">
           <HomeIcon className="size-sm" />
         </Button>
-        <Avatar>
-          <AvatarImage
-            src="https://github.com/shadcn.png"
-            className="size-xs"
-          />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <NavUser />
       </div>
     </div>
   );
