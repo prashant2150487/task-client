@@ -29,7 +29,7 @@ const TreeNode = ({
   return (
     <div style={{ paddingLeft: `${depth * 12}px` }}>
       <ItemTitle
-        className="flex items-center w-full gap-2 text-primary-foreground py-1 pl-2 pr-1 hover:bg-accent-foreground rounded-md cursor-pointer"
+        className="flex items-center w-full gap-2 text-primary-foreground px-2 hover:bg-accent-foreground rounded-md cursor-pointer"
         onClick={toggleExpand}
       >
         {isFolder && (
@@ -49,7 +49,7 @@ const TreeNode = ({
           <File size={15} className="text-gray-300" />
         )}
 
-        <span className="truncate">{node.name}</span>
+        <span className="truncate capitalize">{node.name}</span>
         <span className="gap-2 ml-auto flex">
           <ButtonGroup>
             <Button
