@@ -60,7 +60,7 @@ const SubSidebar = () => {
           <ItemContent className="">
             <div className="mt-1 w-full">
               {fileData?.data?.map((item) => (
-                <TreeNode key={item.id} node={item} />
+                <TreeNode key={item.id} node={item} setShowOptions={setShowOptions} />
               ))}
             </div>
 

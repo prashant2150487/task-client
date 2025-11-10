@@ -9,11 +9,10 @@ import {
 import { useState } from "react";
 import { ItemTitle } from "@/components/ui/item";
 import type { TreeNodeProps } from "./typing";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 
-
-
-
-const TreeNode = ({ node, depth = 0 }: TreeNodeProps) => {
+const TreeNode = ({ node, depth = 0, setShowOptions }: TreeNodeProps) => {
   const [show, setShow] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const isFolder = node.type === "folder";
@@ -46,9 +45,26 @@ const TreeNode = ({ node, depth = 0 }: TreeNodeProps) => {
         )}
 
         <span className="truncate">{node.name}</span>
-        <span className="gap-2 ml-auto hidden hover:flex">
-          <Ellipsis size={17} className="text-gray-300" />
-          <Plus size={17} className="text-gray-300" />
+        <span className="gap-2 ml-auto flex">
+          <ButtonGroup>
+            <Button
+              size="icon"
+              className="bg-transparent cursor-pointer hover:bg-muted-foreground"
+            >
+              <Ellipsis size={17} className="text-gray-300" />
+            </Button>
+            <Button
+              size="icon"
+              className="bg-transparent cursor-pointer hover:bg-muted-foreground"
+              onClick={()=>setShowOptions(true)}
+            >
+              <Plus
+                size={17}
+                className="text-gray-300"
+                onClick={() => setShowOptions(true)}
+              />
+            </Button>
+          </ButtonGroup>
         </span>
       </ItemTitle>
 
