@@ -20,6 +20,8 @@ const SubSidebar = () => {
     success: false,
     data: [],
   });
+  const [types, setTypes] = useState<"folder" | "file">("folder");
+  const [currentParentId, setCurrentParentId] = useState<number | null>(null);
 
   const handleChange = (name: string) => {
     setName(name);
@@ -27,10 +29,17 @@ const SubSidebar = () => {
   const handleCreate = async () => {
     setEditMode(false);
     try {
-      const res = await axiosInstance.post("/workspace/folder", {
-        name: name,
-        parentId: null,
-      });
+      const res = await axiosInstance.post(
+        types === "folder" ? "/workspace/folder" : "/workspace/file",
+        {
+          name: name,
+          parentId: currentParentId || null,
+        }
+      );
+      if (res.data.success) {
+        getFileData();
+      }
+      setName("");
       console.log(res);
     } catch (err: any) {
       console.log(err.message);
@@ -48,7 +57,12 @@ const SubSidebar = () => {
   useEffect(() => {
     getFileData();
   }, []);
-  console.log(fileData, "fileData");
+  const handleCancel = () => {
+    setEditMode(false);
+    setName("");
+    setShowOptions(false);
+  };
+  console.log(currentParentId, "current");
 
   return (
     <div className="min-h-svh bg-[#2A333F] min-w-sm z-10">
@@ -60,25 +74,28 @@ const SubSidebar = () => {
           <ItemContent className="">
             <div className="mt-1 w-full">
               {fileData?.data?.map((item) => (
-                <TreeNode key={item.id} node={item} setShowOptions={setShowOptions} />
+                <TreeNode
+                  key={item.id}
+                  node={item}
+                  setShowOptions={setShowOptions}
+                  setCurrentParentId={setCurrentParentId}
+                />
               ))}
             </div>
 
-            <ItemTitle
-              className="flex justify-center w-full gap-4 text-white cursor-pointer hover:bg-muted-foreground p-1 rounded-sm"
-              onClick={() => setShowOptions(!showOptions)}
-            >
+            <ItemTitle className="flex justify-center w-full gap-4 text-white cursor-pointer hover:bg-muted-foreground p-1 rounded-sm">
               {editMode ? (
-                <div className="border w-full px-2 py-1 flex">
+                <div className="border border-gray-700 w-full px-2 py-1 flex rounded-sm">
                   <input
                     placeholder="enter name"
-                    className="w-full"
+                    className="w-full border-none focus:border-0 focus:outline-none focus:ring-0 "
+                    type="text"
                     value={name}
                     onChange={(e) => handleChange(e.target.value)}
                   />
 
                   <Button
-                    variant="outline"
+                    variant="outline" 
                     className="text-black mr-1 cursor-pointer"
                     size="icon-sm"
                     onClick={() => handleCreate()}
@@ -89,22 +106,34 @@ const SubSidebar = () => {
                     variant="outline"
                     className="text-black cursor-pointer"
                     size="icon-sm"
+                    onClick={() => handleCancel()}
                   >
                     <X />
                   </Button>
                 </div>
               ) : (
-                <>
+                <div
+                  className="flex items-center gap-2 w-full justify-center"
+                  onClick={() => {
+                    setShowOptions(false);
+                    setCurrentParentId(null);
+                    setShowOptions(true);
+                  }}
+                >
                   <Plus className="text-white size-5" />
                   <span className="text-base">New</span>
-                </>
+                </div>
               )}
             </ItemTitle>
           </ItemContent>
         </Item>
       </div>
       {showOptions && (
-        <Options setEditMode={setEditMode} setShowOptions={setShowOptions} />
+        <Options
+          setEditMode={setEditMode}
+          setShowOptions={setShowOptions}
+          setTypes={setTypes}
+        />
       )}
     </div>
   );

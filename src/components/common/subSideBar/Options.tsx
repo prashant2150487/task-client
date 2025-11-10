@@ -3,13 +3,16 @@ import { Item, ItemContent, ItemTitle } from "@/components/ui/item";
 const Options = ({
   setEditMode,
   setShowOptions,
+  setTypes,
 }: {
   setEditMode: (value: boolean) => void;
   setShowOptions: (value: boolean) => void;
+  setTypes: (value: string) => void;
 }) => {
-  const handleClick = () => {
+  const handleClick = (type : string) => {
     setEditMode(true);
     setShowOptions(false);
+    setTypes(type);
   };
 
   return (
@@ -18,15 +21,15 @@ const Options = ({
         <ItemContent className="p-0">
           <ItemTitle
             className="cursor-pointer w-full hover:bg-gray-600 p-1"
-            onClick={() => handleClick()}
+            onClick={() => handleClick("folder")}
           >
             Create Folder
           </ItemTitle>
           <ItemTitle
             className="cursor-pointer w-full p-1 hover:bg-gray-600"
-            onClick={() => setEditMode(false)}
+            onClick={() => handleClick("file")}
           >
-            Create{" "}
+            Create File
           </ItemTitle>
         </ItemContent>
       </Item>

@@ -12,7 +12,12 @@ import type { TreeNodeProps } from "./typing";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 
-const TreeNode = ({ node, depth = 0, setShowOptions }: TreeNodeProps) => {
+const TreeNode = ({
+  node,
+  depth = 0,
+  setShowOptions,
+  setCurrentParentId,
+}: TreeNodeProps) => {
   const [show, setShow] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const isFolder = node.type === "folder";
@@ -56,13 +61,12 @@ const TreeNode = ({ node, depth = 0, setShowOptions }: TreeNodeProps) => {
             <Button
               size="icon"
               className="bg-transparent cursor-pointer hover:bg-muted-foreground"
-              onClick={()=>setShowOptions(true)}
+              onClick={() => {
+                setShowOptions(true);
+                setCurrentParentId(node?.id);
+              }}
             >
-              <Plus
-                size={17}
-                className="text-gray-300"
-                onClick={() => setShowOptions(true)}
-              />
+              <Plus size={17} className="text-gray-300" />
             </Button>
           </ButtonGroup>
         </span>
