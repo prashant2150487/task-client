@@ -1,22 +1,20 @@
-import { File, Folder, ChevronRight, ChevronDown } from "lucide-react";
+import {
+  File,
+  Folder,
+  ChevronRight,
+  ChevronDown,
+  Plus,
+  Ellipsis,
+} from "lucide-react";
 import { useState } from "react";
 import { ItemTitle } from "@/components/ui/item";
+import type { TreeNodeProps } from "./typing";
 
-interface FileNode {
-  id: number;
-  name: string;
-  type: string;
-  status?: string | null;
-  parentId: number | null;
-  children: FileNode[];
-}
 
-interface TreeNodeProps {
-  node: FileNode;
-  depth?: number;
-}
+
 
 const TreeNode = ({ node, depth = 0 }: TreeNodeProps) => {
+  const [show, setShow] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const isFolder = node.type === "folder";
 
@@ -27,7 +25,7 @@ const TreeNode = ({ node, depth = 0 }: TreeNodeProps) => {
   return (
     <div style={{ paddingLeft: `${depth * 12}px` }}>
       <ItemTitle
-        className="flex items-center gap-2 text-primary-foreground py-1 pl-2 pr-1 hover:bg-accent-foreground rounded-md cursor-pointer"
+        className="flex items-center w-full gap-2 text-primary-foreground py-1 pl-2 pr-1 hover:bg-accent-foreground rounded-md cursor-pointer"
         onClick={toggleExpand}
       >
         {isFolder && (
@@ -39,7 +37,7 @@ const TreeNode = ({ node, depth = 0 }: TreeNodeProps) => {
             )}
           </>
         )}
-        {!isFolder && <div className="w-4" />} 
+        {!isFolder && <div className="w-4" />}
 
         {isFolder ? (
           <Folder size={15} className="text-blue-400" />
@@ -48,6 +46,10 @@ const TreeNode = ({ node, depth = 0 }: TreeNodeProps) => {
         )}
 
         <span className="truncate">{node.name}</span>
+        <span className="gap-2 ml-auto hidden hover:flex">
+          <Ellipsis size={17} className="text-gray-300" />
+          <Plus size={17} className="text-gray-300" />
+        </span>
       </ItemTitle>
 
       {isFolder && isExpanded && node.children?.length > 0 && (

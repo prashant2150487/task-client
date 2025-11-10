@@ -1,19 +1,11 @@
 import { Item, ItemContent, ItemTitle } from "@/components/ui/item";
-import { Check, File, Folder, Plus, Star, X } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Options from "./Options";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/services/axiosInstance";
 import TreeNode from "./treeNode";
-
-interface FileNode {
-  id: number;
-  name: string;
-  type: string;
-  status: string | null;
-  parentId: number | null;
-  children: FileNode[];
-}
+import type { FileNode } from "./typing";
 
 interface ApiResponse {
   success: boolean;
@@ -58,7 +50,6 @@ const SubSidebar = () => {
   }, []);
   console.log(fileData, "fileData");
 
-  console.log(name);
   return (
     <div className="min-h-svh bg-[#2A333F] min-w-sm z-10">
       <div className="border-b border-gray-400 p-3 text-white font-bold pl-4">
@@ -67,10 +58,7 @@ const SubSidebar = () => {
       <div>
         <Item className="p-1 mt-2">
           <ItemContent className="">
-            <ItemTitle className="text-primary-foreground p-1 pl-5 hover:bg-accent-foreground w-full rounded-md">
-              <Star size="15" /> My Work
-            </ItemTitle>
-            <div className="mt-1">
+            <div className="mt-1 w-full">
               {fileData?.data?.map((item) => (
                 <TreeNode key={item.id} node={item} />
               ))}
