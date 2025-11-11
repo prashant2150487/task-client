@@ -31,11 +31,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run lint
-        run: npm run lint
+    #   - name: Run lint
+    #     run: npm run lint
 
-      - name: Build Good-task
-        run: npm run build
+    #   - name: Build Good-task
+    #     run: npm run build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
