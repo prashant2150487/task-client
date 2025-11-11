@@ -1,81 +1,81 @@
-name: Good-task PR & Merge to Live
+# name: Good-task PR & Merge to Live
 
-on:
-  pull_request:
-    branches: [ live ]
-  push:
-    branches: [ live ]
+# on:
+#   pull_request:
+#     branches: [ live ]
+#   push:
+#     branches: [ live ]
 
-jobs:
-  validate:
-    name: Validate Good-task on PR/Push to live
-    runs-on: ubuntu-latest
+# jobs:
+#   validate:
+#     name: Validate Good-task on PR/Push to live
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+#       - name: Use Node.js 22
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '22'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-good-task-node-${{ hashFiles('package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-good-task-node-
+#       - name: Cache node_modules
+#         uses: actions/cache@v4
+#         with:
+#           path: node_modules
+#           key: ${{ runner.os }}-good-task-node-${{ hashFiles('package.json') }}
+#           restore-keys: |
+#             ${{ runner.os }}-good-task-node-
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-    #   - name: Run lint
-    #     run: npm run lint
+#       - name: Run lint
+#         run: npm run lint
 
-    #   - name: Build Good-task
-    #     run: npm run build
+#       - name: Build Good-task
+#         run: npm run build
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: good-task-dist-${{ github.sha }}
-          path: dist
-          retention-days: 5
+#       - name: Upload build artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: good-task-dist-${{ github.sha }}
+#           path: dist
+#           retention-days: 5
 
-  deploy:
-    name: Deploy Good-task (on merge to live)
-    needs: validate
-    if: github.event_name == 'push' && github.ref == 'refs/heads/live'
-    runs-on: ubuntu-latest
+#   deploy:
+#     name: Deploy Good-task (on merge to live)
+#     needs: validate
+#     if: github.event_name == 'push' && github.ref == 'refs/heads/live'
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+#       - name: Use Node.js 22
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '22'
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - name: Build Good-task for production
-        run: npm run build
+#       - name: Build Good-task for production
+#         run: npm run build
 
-      - name: Deploy placeholder
-        run: |
-          echo "✅ Good-task build successful on merge to live!"
-          echo "Deploying to production..."
-          echo "Add deploy steps here:"
-          echo "  - Deploy to Vercel: npx vercel --prod --token \${{ secrets.VERCEL_TOKEN }}"
-          echo "  - Deploy to Netlify: netlify deploy --prod --auth \${{ secrets.NETLIFY_AUTH_TOKEN }}"
-          echo "  - Upload to S3: aws s3 sync dist s3://bucket-name"
-          echo "  - Deploy to Cloudflare Pages"
-          echo "Set up GitHub Secrets for credentials"
+#       - name: Deploy placeholder
+#         run: |
+#           echo "✅ Good-task build successful on merge to live!"
+#           echo "Deploying to production..."
+#           echo "Add deploy steps here:"
+#           echo "  - Deploy to Vercel: npx vercel --prod --token \${{ secrets.VERCEL_TOKEN }}"
+#           echo "  - Deploy to Netlify: netlify deploy --prod --auth \${{ secrets.NETLIFY_AUTH_TOKEN }}"
+#           echo "  - Upload to S3: aws s3 sync dist s3://bucket-name"
+#           echo "  - Deploy to Cloudflare Pages"
+#           echo "Set up GitHub Secrets for credentials"
 
-      - name: Notify Slack/Discord (optional)
-        run: |
-          echo "Add notification step here (e.g., send to Slack/Discord)"
+#       - name: Notify Slack/Discord (optional)
+#         run: |
+#           echo "Add notification step here (e.g., send to Slack/Discord)"
