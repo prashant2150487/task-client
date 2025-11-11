@@ -6,6 +6,11 @@ import { Button } from "@/components/ui/button";
 import axiosInstance from "@/services/axiosInstance";
 import TreeNode from "./treeNode";
 import type { FileNode } from "./typing";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ApiResponse {
   success: boolean;
@@ -95,16 +100,16 @@ const SubSidebar = () => {
                   />
 
                   <Button
-                    variant="outline" 
-                    className="text-black mr-1 cursor-pointer"
+                    
+                    className="mr-1 cursor-pointer bg-accent-foreground hover:bg-accent-foreground text-white"
                     size="icon-sm"
                     onClick={() => handleCreate()}
                   >
                     <Check />
                   </Button>
                   <Button
-                    variant="outline"
-                    className="text-black cursor-pointer"
+                    
+                    className="text-white  cursor-pointer bg-accent-foreground hover:bg-accent-foreground "
                     size="icon-sm"
                     onClick={() => handleCancel()}
                   >
@@ -112,29 +117,38 @@ const SubSidebar = () => {
                   </Button>
                 </div>
               ) : (
-                <div
-                  className="flex items-center gap-2 w-full justify-center"
-                  onClick={() => {
-                    setShowOptions(false);
-                    setCurrentParentId(null);
-                    setShowOptions(true);
-                  }}
-                >
-                  <Plus className="text-white size-5" />
-                  <span className="text-base">New</span>
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    asChild
+                    className="p-0 "
+                    onClick={() => {
+                      setShowOptions(false);
+                      setCurrentParentId(null);
+                      setShowOptions(true);
+                    }}
+                  >
+                    <Button className="w-full">
+                      <Plus className="text-white size-5" />
+                      <span className="text-base">New</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className="min-w-sm bg-muted-foreground text-white"
+                    side="right"
+                    sideOffset={10}
+                  >
+                    <Options
+                      setEditMode={setEditMode}
+                      setShowOptions={setShowOptions}
+                      setTypes={setTypes}
+                    />
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </ItemTitle>
           </ItemContent>
         </Item>
       </div>
-      {showOptions && (
-        <Options
-          setEditMode={setEditMode}
-          setShowOptions={setShowOptions}
-          setTypes={setTypes}
-        />
-      )}
     </div>
   );
 };
