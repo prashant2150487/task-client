@@ -1,8 +1,6 @@
 import {
-  DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Item, ItemContent, ItemTitle } from "@/components/ui/item";
 
 const Options = ({
   setEditMode,
