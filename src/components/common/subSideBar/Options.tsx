@@ -1,3 +1,7 @@
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Item, ItemContent, ItemTitle } from "@/components/ui/item";
 
 const Options = ({
@@ -9,31 +13,27 @@ const Options = ({
   setShowOptions: (value: boolean) => void;
   setTypes: (value: string) => void;
 }) => {
-  const handleClick = (type : string) => {
+  const handleClick = (type: string) => {
     setEditMode(true);
     setShowOptions(false);
     setTypes(type);
   };
 
   return (
-    <div className="bg-gray-700 absolute w-sm left-96 top-50 rounded-md">
-      <Item className="p-2">
-        <ItemContent className="p-0">
-          <ItemTitle
-            className="cursor-pointer w-full hover:bg-gray-600 p-1"
-            onClick={() => handleClick("folder")}
-          >
-            Create Folder
-          </ItemTitle>
-          <ItemTitle
-            className="cursor-pointer w-full p-1 hover:bg-gray-600"
-            onClick={() => handleClick("file")}
-          >
-            Create File
-          </ItemTitle>
-        </ItemContent>
-      </Item>
-    </div>
+    <>
+      <DropdownMenuItem
+        className="cursor-pointer w-full hover:bg-gray-600 p-1"
+        onClick={() => handleClick("folder")}
+      >
+        Create Folder
+      </DropdownMenuItem>
+      <DropdownMenuItem
+        className="cursor-pointer w-full p-1 hover:bg-gray-600"
+        onClick={() => handleClick("file")}
+      >
+        Create File
+      </DropdownMenuItem>
+    </>
   );
 };
 

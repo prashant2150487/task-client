@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     // Handle common errors
-    if (error.response?.status === 401) {
+    if (error.response?.status === 403) {
       // Handle unauthorized access
       localStorage.removeItem("authToken");
       if (window.location.pathname !== "/login") {
