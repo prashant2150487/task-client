@@ -15,9 +15,8 @@ import { ButtonGroup } from "@/components/ui/button-group";
 const TreeNode = ({
   node,
   depth = 0,
-  setShowOptions,
+  setShowOptions ,
   setCurrentParentId,
-  setShowNewDialog,
   newButtonRef,
 }: TreeNodeProps) => {
   const [isExpanded, setIsExpanded] = useState(false);

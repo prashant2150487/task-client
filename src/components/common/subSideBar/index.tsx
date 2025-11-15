@@ -86,7 +86,6 @@ const SubSidebar = () => {
                   node={item}
                   setShowOptions={setShowOptions}
                   setCurrentParentId={setCurrentParentId}
-                  setShowNewDialog={setShowNewDialog}
                   newButtonRef={newButtonRef}
                 />
               ))}
