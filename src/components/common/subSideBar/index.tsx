@@ -1,6 +1,6 @@
 import { Item, ItemContent, ItemTitle } from "@/components/ui/item";
 import { Check, Plus, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Options from "./Options";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/services/axiosInstance";
@@ -18,6 +18,7 @@ interface ApiResponse {
 }
 
 const SubSidebar = () => {
+   const [showNewDialog, setShowNewDialog] = useState<boolean>(false)
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
@@ -25,6 +26,7 @@ const SubSidebar = () => {
     success: false,
     data: [],
   });
+  const newButtonRef=useRef<HTMLButtonElement>(null)
   const [types, setTypes] = useState<"folder" | "file">("folder");
   const [currentParentId, setCurrentParentId] = useState<number | null>(null);
 
@@ -84,6 +86,8 @@ const SubSidebar = () => {
                   node={item}
                   setShowOptions={setShowOptions}
                   setCurrentParentId={setCurrentParentId}
+                  setShowNewDialog={setShowNewDialog}
+                  newButtonRef={newButtonRef}
                 />
               ))}
             </div>
@@ -117,7 +121,7 @@ const SubSidebar = () => {
                   </Button>
                 </div>
               ) : (
-                <DropdownMenu>
+                <DropdownMenu open={showNewDialog} onOpenChange={setShowNewDialog}>
                   <DropdownMenuTrigger
                     asChild
                     className="p-0 "
@@ -126,6 +130,7 @@ const SubSidebar = () => {
                       setCurrentParentId(null);
                       setShowOptions(true);
                     }}
+                    ref={newButtonRef}
                   >
                     <Button className="w-full">
                       <Plus className="text-white size-5" />

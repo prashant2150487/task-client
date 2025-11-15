@@ -17,8 +17,9 @@ const TreeNode = ({
   depth = 0,
   setShowOptions,
   setCurrentParentId,
+  setShowNewDialog,
+  newButtonRef,
 }: TreeNodeProps) => {
-  const [show, setShow] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const isFolder = node.type === "folder";
 
@@ -61,9 +62,10 @@ const TreeNode = ({
             <Button
               size="icon"
               className="bg-transparent cursor-pointer hover:bg-muted-foreground"
-              onClick={() => {
-                setShowOptions(true);
+              onClick={(e) => {
                 setCurrentParentId(node?.id);
+                setShowNewDialog(true);
+                newButtonRef.current?.click()
               }}
             >
               <Plus size={17} className="text-gray-300" />

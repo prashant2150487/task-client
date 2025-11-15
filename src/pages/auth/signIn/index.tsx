@@ -15,7 +15,7 @@ import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import axiosInstance from "@/services/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/services/slices/authSlice";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Signin = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const Signin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,9 +52,7 @@ const Signin = () => {
 
         navigate("/");
       }
-     
     } catch (err) {
-      
       console.error("Sign in error:", err);
     } finally {
       setIsLoading(false);
@@ -183,9 +181,12 @@ const Signin = () => {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <a href="#" className="text-blue-600 hover:underline font-medium">
+            <Link
+              to="/signup"
+              className="text-blue-600 hover:underline font-medium"
+            >
               Sign up
-            </a>
+            </Link>
           </p>
         </CardFooter>
       </Card>
