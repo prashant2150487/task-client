@@ -14,13 +14,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axiosInstance from "./services/axiosInstance";
 
+
 function App() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   console.log(user,"user1")
   async function fetchUser() {
     try {
-      const res = await axiosInstance.get("/api/v1/users/me");
+      const res = await axiosInstance.get("/users/me");
       // console.log(res,"res")
       if (res.data.data.sucess) {
         dispatch({
