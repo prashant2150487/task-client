@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CircleUser, CreditCard, LogOut, MessageSquareDot } from "lucide-react";
+import { Link } from "react-router";
 
 const NavUser = () => {
   return (
@@ -43,9 +44,11 @@ const NavUser = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer">
-            <CircleUser />
-            Account
+          <DropdownMenuItem className="cursor-pointer" asChild>
+            <Link to="/my-account" className="flex gap-2 items-center">
+              <CircleUser />
+               Account Setting
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
             {/* <IconCreditCard /> */}
