@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import axiosInstance from "@/services/axiosInstance";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
@@ -28,6 +28,17 @@ const Profile = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const user = useSelector((state) => state.auth);
+  console.log(user, "user",userData);
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        name: user?.user?.name,
+        phone: user?.user?.phone,
+        contact: user?.user?.contact,
+        avatar: user?.user?.avatar,
+      });
+    }
+  }, [user]);
 
   const handleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>

@@ -4,6 +4,8 @@ export interface User {
   id: number;
   email: string;
   name: string;
+  phone: string;
+  contact: string;
 }
 
 interface AuthState {
@@ -15,7 +17,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   token: localStorage.getItem("authToken") || null,
-  isAuthenticated: !!localStorage.getItem("authToken")
+  isAuthenticated: !!localStorage.getItem("authToken"),
 };
 
 const authSlice = createSlice({

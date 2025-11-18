@@ -13,21 +13,24 @@ import Profile from "./pages/profile/inde";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axiosInstance from "./services/axiosInstance";
-
+import { setCredentials } from "./services/slices/authSlice";
 
 function App() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  console.log(user,"user1")
+  console.log(user, "user1");
   async function fetchUser() {
     try {
       const res = await axiosInstance.get("/users/me");
-      // console.log(res,"res")
-      if (res.data.data.sucess) {
-        dispatch({
-          user: res.data.data.user,
-          token: res.data.data.token,
-        });
+      console.log(res, "res");
+      if (res.data.success) {
+        dispatch(
+          setCredentials({
+            user: res.data.data.user,
+            token: res.data.data.token,
+          })
+        );
+        
       }
     } catch (error) {
       console.log(error);
@@ -52,7 +55,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Signin />} />
-          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPasswordView />} />
           <Route path="/reset-password" element={<ResetPasswordView />} />
           <Route path="/sucess-view" element={<SuccessView />} />
