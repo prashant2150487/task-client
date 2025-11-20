@@ -30,7 +30,6 @@ const Profile = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const user = useSelector((state) => state.auth);
-  console.log(user, "user", userData);
   useEffect(() => {
     if (user) {
       setUserData({
@@ -49,8 +48,28 @@ const Profile = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      console.log(formData, "formData");
+
+      const res = await axiosInstance.post("/upload/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (res.data.success) {
+        toast.success("Image uploaded successfully");
+        setUserData({
+          ...userData,
+          avatar: res.data.url,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to upload image");
+    }
   };
 
   const handleSubmit = async () => {
@@ -65,8 +84,8 @@ const Profile = () => {
         userData
       );
       toast.success(res.data.message);
-      setUserData({...userData,...res.data.data});
-      console.log(res,"data")
+      setUserData({ ...userData, ...res.data.data });
+      console.log(res, "data");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -74,7 +93,6 @@ const Profile = () => {
       setLoading(false);
     }
   };
-  console.log(userData, "user");
   return (
     <div className="text-black flex items-center justify-center min-h-screen bg-[#1C2631] flex-col gap-4">
       <div className="border border-gray-100  p-8 w-full max-w-md flex flex-col gap-6 bg-[#1A222C] text-white shadow-sm">
@@ -93,6 +111,7 @@ const Profile = () => {
             type="email"
             placeholder="name"
             value={userData?.email}
+            className="flex-1 cursor-not-allowed"
             disabled
             onChange={(e) =>
               setUserData({ ...userData, email: e.target.value })
@@ -125,11 +144,11 @@ const Profile = () => {
         </div>
         <div className="flex w-full max-w-sm items-center gap-6 justify-between">
           <Label htmlFor="avatar">Avatar</Label>
-          <div className="flex gap-4">
+          <div className="flex gap-4 " >
             <Avatar>
               <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="@shadcn"
+                src={userData.avatar || "https://via.placeholder.com/40"}
+                alt="avatar"
                 width={20}
               />
               <AvatarFallback className="text-black">CN</AvatarFallback>
