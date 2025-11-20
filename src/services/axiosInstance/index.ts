@@ -36,13 +36,13 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     // Handle common errors
-    if (error.response?.status === 403) {
+    // if (error.response?.status === 403) {
       // Handle unauthorized access
-      localStorage.removeItem("authToken");
-      if (window.location.pathname !== "/login") {
-        window.location.href = "/login";
-      }
-    }
+      // localStorage.removeItem("authToken");
+      // if (window.location.pathname !== "/login") {
+      //   window.location.href = "/login";
+      // }
+    // }
     return Promise.reject(error);
   }
 );

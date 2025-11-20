@@ -13,6 +13,7 @@ type userDataProps = {
   phone: string;
   contact: string;
   avatar: string;
+  email: string;
 };
 interface MyResponseType {
   success: boolean;
@@ -25,10 +26,11 @@ const Profile = () => {
     phone: "",
     contact: "",
     avatar: "",
+    email: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
   const user = useSelector((state) => state.auth);
-  console.log(user, "user",userData);
+  console.log(user, "user", userData);
   useEffect(() => {
     if (user) {
       setUserData({
@@ -36,6 +38,7 @@ const Profile = () => {
         phone: user?.user?.phone,
         contact: user?.user?.contact,
         avatar: user?.user?.avatar,
+        email: user?.user?.email,
       });
     }
   }, [user]);
@@ -62,13 +65,8 @@ const Profile = () => {
         userData
       );
       toast.success(res.data.message);
-      setUserData({
-        name: "",
-        phone: "",
-        contact: "",
-        avatar: "",
-      });
-      console.log(res);
+      setUserData({...userData,...res.data.data});
+      console.log(res,"data")
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -87,6 +85,18 @@ const Profile = () => {
             placeholder="name"
             value={userData?.name}
             onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+          />
+        </div>
+        <div className="flex w-full max-w-sm items-center gap-6 justify-between ">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            type="email"
+            placeholder="name"
+            value={userData?.email}
+            disabled
+            onChange={(e) =>
+              setUserData({ ...userData, email: e.target.value })
+            }
           />
         </div>
         <div className="flex w-full max-w-sm items-center gap-6 justify-between">
