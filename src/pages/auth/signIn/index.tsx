@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import axiosInstance from "@/services/axiosInstance";
+import axiosInstance from "@/configs/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/services/slices/authSlice";
 import { Link, useNavigate } from "react-router";

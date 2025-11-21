@@ -12,8 +12,9 @@ import MyAccount from "./pages/myAccount";
 import Profile from "./pages/profile/inde";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import axiosInstance from "./services/axiosInstance";
+import axiosInstance from "./configs/axiosInstance";
 import { setCredentials } from "./services/slices/authSlice";
+import MyEmails from "./pages/myEmails";
 
 function App() {
   const { user } = useSelector((state) => state.auth);
@@ -30,7 +31,6 @@ function App() {
             token: res.data.data.token,
           })
         );
-        
       }
     } catch (error) {
       console.log(error);
@@ -68,7 +68,15 @@ function App() {
               </ProtectedRoutes>
             }
           />
-          <Route path="/my-account/profile" element={<Profile />} />
+          <Route
+            path="/my-account/profile"
+            element={
+              <ProtectedRoutes>
+                <Profile />
+              </ProtectedRoutes>
+            }
+          />
+          <Route path="/my-account/email" element={<MyEmails />} />
         </Routes>
       </BaseLayout>
     </BrowserRouter>

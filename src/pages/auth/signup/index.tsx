@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import axiosInstance from "@/services/axiosInstance";
+import axiosInstance from "@/configs/axiosInstance";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 

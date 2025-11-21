@@ -6,6 +6,7 @@ export interface User {
   name: string;
   phone: string;
   contact: string;
+  image: "string";
 }
 
 interface AuthState {
@@ -37,8 +38,12 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       if (typeof window !== "undefined") localStorage.removeItem("authToken");
     },
+    updateProfileImage(state, action) {
+      if (!state.user) return;
+      state.user = { ...state.user, image: action?.payload || "" };
+    },
   },
 });
 
-export const { logout, setCredentials } = authSlice.actions;
+export const { logout, setCredentials, updateProfileImage } = authSlice.actions;
 export default authSlice.reducer;

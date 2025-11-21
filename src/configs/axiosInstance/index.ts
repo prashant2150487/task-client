@@ -35,14 +35,14 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log(error,"err")
     // Handle common errors
-    // if (error.response?.status === 403) {
-      // Handle unauthorized access
-      // localStorage.removeItem("authToken");
-      // if (window.location.pathname !== "/login") {
-      //   window.location.href = "/login";
-      // }
-    // }
+    if (error.response?.status === 403) {
+      localStorage.removeItem("authToken");
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
     return Promise.reject(error);
   }
 );

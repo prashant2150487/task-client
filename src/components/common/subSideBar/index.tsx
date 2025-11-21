@@ -3,7 +3,7 @@ import { Check, Plus, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Options from "./Options";
 import { Button } from "@/components/ui/button";
-import axiosInstance from "@/services/axiosInstance";
+import axiosInstance from "@/configs/axiosInstance";
 import TreeNode from "./treeNode";
 import type { FileNode } from "./typing";
 import {

@@ -5,11 +5,11 @@ import Features from "./features";
 
 const MyAccount = () => {
   return (
-    <div>
+    <div className="h-screen bg-[#1A222C]">
       <header className="bg-gray-600 border-b p-3 text-white font-bold pl-4">
         <h3>My Account</h3>
       </header>
-      <div className="flex flex-col justify-center items-center bg-[#1A222C]">
+      <div className="flex flex-col justify-center items-center ">
         <div className="flex flex-col justify-center items-center gap-1 bg-red-300 p-10 max-w-7xl">
           <Avatar className="bg-amber-600 size-20">
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />

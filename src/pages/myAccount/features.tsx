@@ -1,42 +1,46 @@
-import { PiIcon } from "lucide-react";
+import { PiIcon, User } from "lucide-react";
 import { Link } from "react-router";
-import profileImg from "../../assets/images/profileImage.png";
 
 const Features = () => {
   const data = [
     {
-      title: "profile",
+      title: "Profile",
       linkTitle: "profile",
-      image: profileImg,
+      icon: User,
     },
     {
-      title: "date/time",
+      title: "Date/Time",
+      linkTitle: "date-time",
+      icon: PiIcon,
     },
     {
-      title: "email",
+      title: "Email",
+      linkTitle: "email",
+      icon: User,
     },
     {
-      title: "",
+      title: "Other",
+      linkTitle: "other",
+      icon: User,
     },
   ];
   return (
-    <div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-4 ">
         {data.map((item) => {
+          const Icon = item?.icon;
           return (
             <div>
               <Link
-                to={item?.linkTitle}
-                className="flex flex-col items-center p-4 rounded-2xl border"
+                to={item?.linkTitle || ""}
+                className="flex flex-col items-center p-2 py-4 rounded-2xl border text-sm gap-2"
               >
-                <img src={item.image} alt="" width={50} />
+                <Icon className="text-white" />
+                <p className="text-white text-center">{item?.title}</p>
               </Link>
-              <p className="text-white text-center">{item?.title}</p>
             </div>
           );
         })}
       </div>
-    </div>
   );
 };
 

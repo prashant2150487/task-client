@@ -3,16 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import axiosInstance from "@/services/axiosInstance";
+import axiosInstance from "@/configs/axiosInstance";
+import { updateProfileImage } from "@/services/slices/authSlice";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 type userDataProps = {
   name: string;
   phone: string;
   contact: string;
-  avatar: string;
+  image: string;
   email: string;
 };
 interface MyResponseType {
@@ -25,18 +28,21 @@ const Profile = () => {
     name: "",
     phone: "",
     contact: "",
-    avatar: "",
+    image: "",
     email: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
   const user = useSelector((state) => state.auth);
+  const navigate=useNavigate()
+  const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
       setUserData({
         name: user?.user?.name,
         phone: user?.user?.phone,
         contact: user?.user?.contact,
-        avatar: user?.user?.avatar,
+        image: user?.user?.image,
         email: user?.user?.email,
       });
     }
@@ -45,6 +51,7 @@ const Profile = () => {
   const handleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
+    setImageLoading(true);
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -63,12 +70,15 @@ const Profile = () => {
         toast.success("Image uploaded successfully");
         setUserData({
           ...userData,
-          avatar: res.data.url,
+          image: res.data.url,
         });
+        dispatch(updateProfileImage(res.data.data?.url));
       }
     } catch (error) {
       console.log(error);
       toast.error("Failed to upload image");
+    } finally {
+      setImageLoading(false);
     }
   };
 
@@ -93,6 +103,9 @@ const Profile = () => {
       setLoading(false);
     }
   };
+  const handleGoBack=()=>{
+  navigate(-1)
+  }
   return (
     <div className="text-black flex items-center justify-center min-h-screen bg-[#1C2631] flex-col gap-4">
       <div className="border border-gray-100  p-8 w-full max-w-md flex flex-col gap-6 bg-[#1A222C] text-white shadow-sm">
@@ -144,17 +157,15 @@ const Profile = () => {
         </div>
         <div className="flex w-full max-w-sm items-center gap-6 justify-between">
           <Label htmlFor="avatar">Avatar</Label>
-          <div className="flex gap-4 " >
-            <Avatar>
-              <AvatarImage
-                src={userData.avatar || "https://via.placeholder.com/40"}
-                alt="avatar"
-                width={20}
-              />
+          <div className="flex gap-4 ">
+            <Avatar className="size-10">
+              <AvatarImage src={userData?.image} alt="avatar" />
               <AvatarFallback className="text-black">CN</AvatarFallback>
             </Avatar>
             <label className="cursor-pointer relative inline-block">
-              <Button className="p-5">Browse</Button>
+              <Button className="p-5">
+                {imageLoading ? "Uploading..." : "Upload Browse"}
+              </Button>
 
               <input
                 type="file"
@@ -165,9 +176,14 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <Button className="cursor-pointer" onClick={handleSubmit}>
-        {loading ? "Saving..." : "Save"}
-      </Button>
+      <div className="flex gap-2">
+        <Button className="cursor-pointer" onClick={handleGoBack}>
+          <ArrowLeft className="text-white" /> Go Back
+        </Button>
+        <Button className="cursor-pointer" onClick={handleSubmit}>
+          {loading ? "Saving..." : "Save"}
+        </Button>
+      </div>
     </div>
   );
 };
